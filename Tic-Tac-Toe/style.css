@@ -33,10 +33,6 @@ body {
     background-color: #f0f0f0;
 }
 
-.ai-move {
-    background-color: #88f;
-}
-
 #board {
     width: 300px;
 }
@@ -47,5 +43,5 @@ body {
     font-weight: bold;
 }
 .winning-pattern {
-    background-color: #f8f;
+    background-color: blue;
 }

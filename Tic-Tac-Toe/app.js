@@ -16,45 +16,45 @@ document.addEventListener("DOMContentLoaded", function () {
     function handleCellClick(event) {
         const clickedCell = event.target;
         const cellIndex = clickedCell.getAttribute("data-index");
-
+    
         if (gameBoard[cellIndex] === "" && !checkWinner()) {
             gameBoard[cellIndex] = currentPlayer;
             clickedCell.textContent = currentPlayer;
-
+    
             const winner = checkWinner();
             if (winner === "draw") {
                 resultDisplay.textContent = "It's a draw!";
             } else if (winner) {
                 resultDisplay.textContent = `${currentPlayer} wins!`;
+                highlightWinningPattern(getWinningCells());
             } else {
                 currentPlayer = currentPlayer === "X" ? "O" : "X";
-
+    
                 for (const cell of board.children) {
-                    cell.classList.remove("ai-move", "winner");
+                    cell.classList.remove("ai-move", "player-move"); // Clear both player and AI move color
                 }
-
+    
                 if (currentPlayer === "O" && !checkWinner()) {
                     setTimeout(makeAIMove, 500);
                 }
             }
         }
     }
+    
 
     function makeAIMove() {
         const bestMove = findBestMove();
         gameBoard[bestMove] = "O";
         const aiCell = board.children[bestMove];
     
-        if (!aiCell.classList.contains("ai-move")) {
-            aiCell.textContent = "O";
-            aiCell.classList.add("ai-move");
-        }
+        aiCell.textContent = "O";
     
         const winner = checkWinner();
         if (winner === "draw") {
             resultDisplay.textContent = "It's a draw!";
         } else if (winner) {
             resultDisplay.textContent = "O wins!";
+            highlightWinningPattern(getWinningCells());
         } else {
             currentPlayer = "X";
         }
