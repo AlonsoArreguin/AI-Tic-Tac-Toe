@@ -47,3 +47,7 @@ h1 {
 .winner {
     background-color: #7FFF00;
 }
+/* Add this rule to style AI moves differently */
+.cell.ai-move {
+    color: #ff0000; /* You can choose any color */
+}
