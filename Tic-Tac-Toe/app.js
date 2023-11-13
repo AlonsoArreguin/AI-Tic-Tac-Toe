@@ -21,11 +21,11 @@ document.addEventListener("DOMContentLoaded", function () {
             gameBoard[cellIndex] = currentPlayer;
             clickedCell.textContent = currentPlayer;
 
-            if (checkWinner()) {
-                resultDisplay.textContent = `${currentPlayer} wins!`;
-                highlightWinnerCells(getWinningCells());
-            } else if (isBoardFull()) {
+            const winner = checkWinner();
+            if (winner === "draw") {
                 resultDisplay.textContent = "It's a draw!";
+            } else if (winner) {
+                resultDisplay.textContent = `${currentPlayer} wins!`;
             } else {
                 currentPlayer = currentPlayer === "X" ? "O" : "X";
 
@@ -44,19 +44,22 @@ document.addEventListener("DOMContentLoaded", function () {
         const bestMove = findBestMove();
         gameBoard[bestMove] = "O";
         const aiCell = board.children[bestMove];
-        aiCell.textContent = "O";
-        aiCell.classList.add("ai-move");
-
-        if (checkWinner()) {
-            resultDisplay.textContent = "O wins!";
-            highlightWinnerCells(getWinningCells());
-        } else if (isBoardFull()) {
+    
+        if (!aiCell.classList.contains("ai-move")) {
+            aiCell.textContent = "O";
+            aiCell.classList.add("ai-move");
+        }
+    
+        const winner = checkWinner();
+        if (winner === "draw") {
             resultDisplay.textContent = "It's a draw!";
+        } else if (winner) {
+            resultDisplay.textContent = "O wins!";
         } else {
             currentPlayer = "X";
         }
     }
-
+    
     function findBestMove() {
         let bestScore = -Infinity;
         let bestMove;
@@ -125,49 +128,36 @@ document.addEventListener("DOMContentLoaded", function () {
             [0, 4, 8],
             [2, 4, 6],
         ];
-
+    
         for (const pattern of winPatterns) {
             const [a, b, c] = pattern;
             if (gameBoard[a] !== "" && gameBoard[a] === gameBoard[b] && gameBoard[b] === gameBoard[c]) {
+                clearWinningPattern();
+                highlightWinningPattern(pattern);
                 return gameBoard[a];
             }
         }
-
-        return isBoardFull() ? "draw" : null;
-    }
-
-    function isBoardFull() {
-        return !gameBoard.includes("");
-    }
-
-    function getWinningCells() {
-        const winPatterns = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-
-        for (const pattern of winPatterns) {
-            const [a, b, c] = pattern;
-            if (gameBoard[a] !== "" && gameBoard[a] === gameBoard[b] && gameBoard[b] === gameBoard[c]) {
-                return pattern;
-            }
+    
+        if (!gameBoard.includes("")) {
+            return "draw";
         }
-
+    
+        clearWinningPattern(); // Clear the pattern if no winner or draw
         return null;
     }
-
-    function highlightWinnerCells(cells) {
-        if (cells) {
-            for (const cellIndex of cells) {
-                const cell = board.querySelector(`[data-index="${cellIndex}"]`);
-                cell.classList.add("winner");
-            }
+    
+    
+    function highlightWinningPattern(cells) {
+        for (const cellIndex of cells) {
+            const cell = board.children[cellIndex];
+            cell.classList.add("winning-pattern");
         }
     }
+    
+    function clearWinningPattern() {
+        for (const cell of board.children) {
+            cell.classList.remove("winning-pattern");
+        }
+    }
+    
 });

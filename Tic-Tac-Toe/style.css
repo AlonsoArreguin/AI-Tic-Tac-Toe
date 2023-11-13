@@ -21,33 +21,31 @@ body {
 .cell {
     width: 100px;
     height: 100px;
-    border: 2px solid #333;
+    border: 1px solid #ccc;
+    display: inline-block;
     font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+    line-height: 100px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .cell:hover {
     background-color: #f0f0f0;
 }
 
-h1 {
-    color: #333;
+.ai-move {
+    background-color: #88f;
+}
+
+#board {
+    width: 300px;
 }
 
 #result {
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 18px;
     font-weight: bold;
-    color: #333;
 }
-.winner {
-    background-color: #7FFF00;
-}
-/* Add this rule to style AI moves differently */
-.cell.ai-move {
-    color: #ff0000; /* You can choose any color */
+.winning-pattern {
+    background-color: #f8f;
 }
