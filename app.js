@@ -41,6 +41,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     
+    const resetButton = document.getElementById("resetButton");
+    resetButton.addEventListener("click", resetGame);
+
+    function resetGame() {
+
+        gameBoard = ["", "", "", "", "", "", "", "", ""];
+        for (const cell of board.children) {
+            cell.textContent = "";
+        }
+
+
+        resultDisplay.textContent = "";
+
+
+        clearWinningPattern();
+
+ 
+        currentPlayer = "X";
+    }
 
     function makeAIMove() {
         const bestMove = findBestMove();
